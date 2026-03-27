@@ -1,11 +1,15 @@
 # API_REST_web3_CP303061X
-Projeto baseado em arquitetura de microsserviços, composto por três domínios independentes:
+Projeto baseado em arquitetura de microsserviços, composto por cinco domínios independentes:
 
-👤 Clientes
+👤 User
 
-📦 Produtos
+📦 Products
 
-🧾 Pedidos
+🧾 Orders
+
+🧾 Inventory
+
+🧾 Payment
 
 Cada serviço possui:
 - Banco de dados próprio
@@ -17,9 +21,7 @@ Cada serviço possui:
 
 1. Clonar o repositório:
 
-`git clone https://github.com/Rafaela-Mello/API_REST_web3_CP303061X.git`
-
-`cd nodejs-microservices`
+`git clone https://github.com/Rafaela-Mello/microservicos_produto.git`
 
 2. Estrutura do Projeto
 
@@ -30,16 +32,14 @@ ecommerce-microservices/
 ├── payment-service/       # Porta 3004
 └── order-service/         # Porta 3005 (Orquestrador)
 
-2. Instalar as dependências (em cada serviço):
+3. Instalar as dependências (em cada serviço):
 
 `npm install`
 
-3. Executando cada serviço:
+4. Executando cada serviço:
 
 `npm start`
 
-4. Cada microsserviço roda em sua própria porta (definida no .env.example).
+5. Cada microsserviço roda em sua própria porta (definida no .env.example).
 
-5. Utilize o ThunderClient (extensão do VS Code) ou qualquer cliente HTTP (Postman, Insomnia) para testar os endpoints.
-
-6. OBS: Na pasta "tutorial" você encontrará um PDF com o passo a passo dos serviços "cliente" e "pedido".
+6. Utilize o ThunderClient (extensão do VS Code) ou qualquer cliente HTTP (Postman, Insomnia) para testar os endpoints.
