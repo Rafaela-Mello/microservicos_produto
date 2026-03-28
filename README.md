@@ -1,9 +1,10 @@
 # Microsserviços do Projeto
 Projeto baseado em arquitetura de microsserviços, composto por cinco domínios independentes:
 
-👤 User Service (Porta 3002) - Gestão de clientes e perfis.
 
 🏷️ Product Service (Porta 3001) - Catálogo e detalhes dos itens.
+
+👤 User Service (Porta 3002) - Gestão de clientes.
 
 📦 Inventory Service (Porta 3003) - Controle de estoque e disponibilidade.
 
@@ -18,6 +19,14 @@ Cada serviço possui:
 - Execução independente
 - Comunicação síncrona via HTTP (REST)
 
+# Pré-requisitos
+Para executar este sistema de e-commerce, você precisará ter instalado:
+
+- Node.js
+- Gerenciador de Pacotes: npm (instalado com o Node) 
+- MySQL Server
+- Ferramenta de API: Postman ou Thunder Client
+
 # Instruções do Projeto
 
 1. Clonar o repositório:
@@ -28,10 +37,14 @@ Cada serviço possui:
 
 `npm install`
 
-3. Executando cada serviço:
+3. Cada microsserviço roda em sua própria porta (definida no .env.example)
+
+4. Deve-se criar os bancos de dados, usando o script que está no arquivo `script.sql`
+
+5. Executando cada serviço:
 
 `npm start`
 
-4. Cada microsserviço roda em sua própria porta (definida no .env.example).
+6. Utilize o ThunderClient (extensão do VS Code) ou qualquer cliente HTTP para testar os endpoints.
 
-5. Utilize o ThunderClient (extensão do VS Code) ou qualquer cliente HTTP (Postman, Insomnia) para testar os endpoints.
+Obs: As requisições para teste estão no arquivo `req.md`

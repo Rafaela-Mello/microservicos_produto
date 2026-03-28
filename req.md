@@ -74,6 +74,30 @@ http://localhost:3001/products/1
 
 ==================================================
 
+Service Inventory
+
+GET /inventory/{productId}
+http://localhost:3003/inventory/1
+
+{
+  "id": 1,
+  "productId": 1,
+  "quantity": 1,
+  "createdAt": "2026-03-28T19:58:35.000Z",
+  "updatedAt": "2026-03-28T20:33:05.000Z"
+}
+
+------------
+
+PUT /inventory/{productId}
+http://localhost:3003/inventory/1
+
+{
+  "quantity": 4
+}
+
+==================================================
+
 Service Order
 
 POST /orders
@@ -108,30 +132,6 @@ http://localhost:3005/orders/1
   "status": "PAGO",
   "createdAt": "2026-03-28T21:34:58.000Z",
   "updatedAt": "2026-03-28T21:35:51.000Z"
-}
-
-==================================================
-
-Service Inventory
-
-GET /inventory/{productId}
-http://localhost:3003/inventory/1
-
-{
-  "id": 1,
-  "productId": 1,
-  "quantity": 1,
-  "createdAt": "2026-03-28T19:58:35.000Z",
-  "updatedAt": "2026-03-28T20:33:05.000Z"
-}
-
-------------
-
-PUT /inventory/{productId}
-http://localhost:3003/inventory/1
-
-{
-  "quantity": 4
 }
 
 ==================================================
