@@ -7,6 +7,14 @@ const Order = sequelize.define('Order', {
         primaryKey: true,
         autoIncrement: true 
     },
+    productId: { 
+        type: DataTypes.INTEGER, 
+        allowNull: false 
+    },
+    quantity: { 
+        type: DataTypes.INTEGER, 
+        allowNull: false 
+    },
     status: { 
         type: DataTypes.STRING, 
         defaultValue: 'CRIADO' 

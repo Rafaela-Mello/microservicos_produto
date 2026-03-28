@@ -36,24 +36,42 @@ export const getOrderById = async (req, res) => {
     const order = await Order.findByPk(req.params.id);
     if (!order) return res.status(404).json({ error: 'Pedido não encontrado' });
 
-    // Se ainda for 'CRIADO', pergunta ao serviço de Pagamento (Porta 3004)
     if (order.status === 'CRIADO') {
+      console.log(`Chamando Payment Service para o pedido ${order.id}...`);
       try {
         const payRes = await fetch(`http://localhost:3004/payments/${order.id}`);
         
         if (payRes.ok) {
           const paymentData = await payRes.json();
+          console.log(`Resposta do Payment:`, paymentData);
 
           if (paymentData.status === 'APROVADO') {
+            // 1. Atualiza o status do pedido para PAGO
             await order.update({ status: 'PAGO' });
-            await order.reload();
-        } else if (paymentData.status === 'RECUSADO') {
+            console.log(`Status atualizado para PAGO no banco.`);
+
+            // 2. LOGICA NOVA: Baixa no Estoque (Porta 3003)
+            console.log(`Solicitando baixa de estoque para o produto ${order.productId}...`);
+            const stockRes = await fetch(`http://localhost:3003/inventory/${order.productId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ quantity: -order.quantity }) // Enviamos valor negativo para subtrair
+            });
+
+            if (stockRes.ok) {
+              console.log(`Estoque atualizado com sucesso para o pedido ${order.id}.`);
+            } else {
+              const stockError = await stockRes.json();
+              console.error(`Falha ao atualizar estoque: ${stockError.error}`);
+            }
+
+          } else if (paymentData.status === 'RECUSADO') {
             await order.update({ status: 'CANCELADO' });
-            await order.reload();
+            console.log(`Status atualizado para CANCELADO no banco.`);
           }
         }
       } catch (e) {
-        console.log("Serviço de pagamento ainda não tem registro ou está offline.");
+        console.error("Erro na comunicação com os serviços:", e.message);
       }
     }
 
