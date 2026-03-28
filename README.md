@@ -24,23 +24,14 @@ Cada serviço possui:
 
 `git clone https://github.com/Rafaela-Mello/microservicos_produto.git`
 
-2. Estrutura do Projeto
-
-microservicos-produto/
-├── product-service/       # Porta 3001
-├── user-service/          # Porta 3002
-├── inventory-service/     # Porta 3003
-├── payment-service/       # Porta 3004
-└── order-service/         # Porta 3005
-
-3. Instalar as dependências (em cada serviço):
+2. Instalar as dependências (em cada serviço):
 
 `npm install`
 
-4. Executando cada serviço:
+3. Executando cada serviço:
 
 `npm start`
 
-5. Cada microsserviço roda em sua própria porta (definida no .env.example).
+4. Cada microsserviço roda em sua própria porta (definida no .env.example).
 
-6. Utilize o ThunderClient (extensão do VS Code) ou qualquer cliente HTTP (Postman, Insomnia) para testar os endpoints.
+5. Utilize o ThunderClient (extensão do VS Code) ou qualquer cliente HTTP (Postman, Insomnia) para testar os endpoints.
