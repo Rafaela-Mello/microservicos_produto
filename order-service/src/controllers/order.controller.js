@@ -4,23 +4,30 @@ import fetch from 'node-fetch';
 // POST /orders
 export const createOrder = async (req, res) => {
   try {
-    const { productId, quantity } = req.body;
+    const { userId, items } = req.body; // items deve ser um array
 
-    // 1. Validar Produto no Catálogo
-    const prodRes = await fetch(`http://localhost:3001/products/${productId}`);
-    if (!prodRes.ok) throw new Error('Produto inexistente no catálogo');
+    // 1. Validar Usuário (Porta 3002)
+    const userRes = await fetch(`http://localhost:3002/users/${userId}`);
+    if (!userRes.ok) return res.status(404).json({ error: 'Usuário não encontrado' });
 
-    // 2. Verificar Estoque
-    const invRes = await fetch(`http://localhost:3003/inventory/${productId}`);
-    const inventory = await invRes.json();
-    if (inventory.quantity < quantity) {
-        return res.status(400).json({ error: 'Quantidade insuficiente' });
+    // 2. Validar cada item no Catálogo e Estoque
+    for (const item of items) {
+      // Validar Produto (Porta 3001)
+      const prodRes = await fetch(`http://localhost:3001/products/${item.productId}`);
+      if (!prodRes.ok) return res.status(404).json({ error: `Produto ${item.productId} não existe` });
+
+      // Verificar Estoque (Porta 3003)
+      const invRes = await fetch(`http://localhost:3003/inventory/${item.productId}`);
+      const inventory = await invRes.json();
+      if (inventory.quantity < item.quantity) {
+          return res.status(400).json({ error: `Estoque insuficiente para o produto ${item.productId}` });
+      }
     }
 
-    // 3. Registrar Pedido com status padrão 'CRIADO'
+    // 3. Criar Pedido com a lista de itens
     const order = await Order.create({ 
-      productId: productId,
-      quantity: quantity,
+      userId,
+      items,
       status: 'CRIADO',
     });
 
@@ -37,41 +44,32 @@ export const getOrderById = async (req, res) => {
     if (!order) return res.status(404).json({ error: 'Pedido não encontrado' });
 
     if (order.status === 'CRIADO') {
-      console.log(`Chamando Payment Service para o pedido ${order.id}...`);
       try {
         const payRes = await fetch(`http://localhost:3004/payments/${order.id}`);
         
         if (payRes.ok) {
           const paymentData = await payRes.json();
-          console.log(`Resposta do Payment:`, paymentData);
 
           if (paymentData.status === 'APROVADO') {
-            // 1. Atualiza o status do pedido para PAGO
             await order.update({ status: 'PAGO' });
-            console.log(`Status atualizado para PAGO no banco.`);
 
-            // 2. LOGICA NOVA: Baixa no Estoque (Porta 3003)
-            console.log(`Solicitando baixa de estoque para o produto ${order.productId}...`);
-            const stockRes = await fetch(`http://localhost:3003/inventory/${order.productId}`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ quantity: -order.quantity }) // Enviamos valor negativo para subtrair
-            });
-
-            if (stockRes.ok) {
-              console.log(`Estoque atualizado com sucesso para o pedido ${order.id}.`);
-            } else {
-              const stockError = await stockRes.json();
-              console.error(`Falha ao atualizar estoque: ${stockError.error}`);
+            // Baixa estoque de cada um
+            for (const item of order.items) {
+              console.log(`Baixando estoque: Produto ${item.productId}, Qtd ${item.quantity}`);
+              await fetch(`http://localhost:3003/inventory/${item.productId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ quantity: -item.quantity })
+              });
             }
-
+            
+            await order.reload();
           } else if (paymentData.status === 'RECUSADO') {
             await order.update({ status: 'CANCELADO' });
-            console.log(`Status atualizado para CANCELADO no banco.`);
           }
         }
       } catch (e) {
-        console.error("Erro na comunicação com os serviços:", e.message);
+        console.error("Erro na integração:", e.message);
       }
     }
 

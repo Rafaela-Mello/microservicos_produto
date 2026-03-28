@@ -1,15 +1,16 @@
-# microservicos_produto
+# Microsserviços do Projeto
 Projeto baseado em arquitetura de microsserviços, composto por cinco domínios independentes:
 
-👤 User
+👤 User Service (Porta 3002) - Gestão de clientes e perfis.
 
-📦 Products
+🏷️ Product Service (Porta 3001) - Catálogo e detalhes dos itens.
 
-🧾 Orders
+📦 Inventory Service (Porta 3003) - Controle de estoque e disponibilidade.
 
-🧾 Inventory
+💳 Payment Service (Porta 3004) - Processamento de transações financeiras.
 
-🧾 Payment
+🛒 Order Service (Porta 3005) - Orquestrador do fluxo de compras.
+
 
 Cada serviço possui:
 - Banco de dados próprio
@@ -25,12 +26,12 @@ Cada serviço possui:
 
 2. Estrutura do Projeto
 
-ecommerce-microservices/
+microservicos-produto/
 ├── product-service/       # Porta 3001
 ├── user-service/          # Porta 3002
 ├── inventory-service/     # Porta 3003
 ├── payment-service/       # Porta 3004
-└── order-service/         # Porta 3005 (Orquestrador)
+└── order-service/         # Porta 3005
 
 3. Instalar as dependências (em cada serviço):
 
@@ -43,22 +44,3 @@ ecommerce-microservices/
 5. Cada microsserviço roda em sua própria porta (definida no .env.example).
 
 6. Utilize o ThunderClient (extensão do VS Code) ou qualquer cliente HTTP (Postman, Insomnia) para testar os endpoints.
-
-
-
-
-
-
-
-CHECKLIST
-- OK Service User ------------
-- OK Service Product ---------
-- OK Service Inventory -------
-
-- Service Order
-- Service Payment
-FALTA O PAYMENT SIMULAR O PAGAMENTO NO PEDIDO E O PEDIDO ATUALIZAR QUANDO FORMOS BUSCAR ELE
-
-
-- mudar as portas pela ordem dps direito
-- mudar diagrama pq ta errado algumas res kkkkkk

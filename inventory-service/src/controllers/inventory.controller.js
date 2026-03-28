@@ -20,13 +20,13 @@ export const updateInventory = async (req, res) => {
     const { productId } = req.params;
     const change = req.body.quantity;
 
-    // Tenta encontrar ou criar o registro com quantidade 0
+    // tenta encontrar ou criar o registro com quantidade 0
     const [item, created] = await Inventory.findOrCreate({ 
       where: { productId: productId },
       defaults: { quantity: 0 } 
     });
 
-    // Validação de estoque (mesma lógica)
+    // Validação de estoque
     if (change < 0 && item.quantity < Math.abs(change)) {
       return res.status(400).json({ error: 'Quantidade superior ao estoque disponível' });
     }
