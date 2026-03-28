@@ -9,7 +9,8 @@ const Inventory = sequelize.define('Inventory', {
     },
     productId: { 
         type: DataTypes.INTEGER, 
-        primaryKey: true 
+        allowNull: false,
+        unique: true
     },
     quantity: { 
         type: DataTypes.INTEGER, 

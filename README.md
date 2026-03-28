@@ -43,3 +43,22 @@ ecommerce-microservices/
 5. Cada microsserviço roda em sua própria porta (definida no .env.example).
 
 6. Utilize o ThunderClient (extensão do VS Code) ou qualquer cliente HTTP (Postman, Insomnia) para testar os endpoints.
+
+
+
+
+
+
+
+CHECKLIST
+- OK Service User ------------
+- OK Service Product ---------
+- OK Service Inventory -------
+
+- Service Order
+- Service Payment
+FALTA O PAYMENT SIMULAR O PAGAMENTO NO PEDIDO E O PEDIDO ATUALIZAR QUANDO FORMOS BUSCAR ELE
+
+
+- mudar as portas pela ordem dps direito
+- mudar diagrama pq ta errado algumas res kkkkkk
