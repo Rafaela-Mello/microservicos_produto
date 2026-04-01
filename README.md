@@ -47,4 +47,4 @@ Para executar este sistema de e-commerce, você precisará ter instalado:
 
 6. Utilize o ThunderClient (extensão do VS Code) ou qualquer cliente HTTP para testar os endpoints.
 
-Obs: As requisições para teste estão no arquivo `req.md`
+Obs: As requisições para teste via Postman estão no arquivo `req.postman_collection.json`
